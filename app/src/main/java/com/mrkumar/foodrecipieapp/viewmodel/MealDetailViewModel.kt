@@ -4,14 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mrkumar.foodrecipieapp.pojo.Meal
-import com.mrkumar.foodrecipieapp.pojo.MealList
-import com.mrkumar.foodrecipieapp.retrofit.RetrofitInstance
+import androidx.lifecycle.viewModelScope
+import com.mrkumar.foodrecipieapp.model.Meal
+import com.mrkumar.foodrecipieapp.model.MealList
+import com.mrkumar.foodrecipieapp.api.RetrofitInstance
+import com.mrkumar.foodrecipieapp.database.MealDatabase
+import com.mrkumar.foodrecipieapp.model.MealDBModel
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MealDetailViewModel:ViewModel() {
+class MealDetailViewModel(private val mealDB:MealDatabase):ViewModel() {
 
     private var mealDetailLiveData=MutableLiveData<Meal>()
 
@@ -34,4 +38,12 @@ class MealDetailViewModel:ViewModel() {
     fun observeMealDetailsLiveData():LiveData<Meal>{
         return mealDetailLiveData
     }
+
+    fun insertMealData(meal:Meal){
+        viewModelScope.launch {
+            mealDB.mealDao().update(meal)
+        }
+    }
+
+
 }

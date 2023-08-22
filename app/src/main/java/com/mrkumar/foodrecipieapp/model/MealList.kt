@@ -1,4 +1,4 @@
-package com.mrkumar.foodrecipieapp.pojo
+package com.mrkumar.foodrecipieapp.model
 
 data class MealList(
     val meals: List<Meal>
